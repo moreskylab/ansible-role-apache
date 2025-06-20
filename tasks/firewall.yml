@@ -1,0 +1,21 @@
+---
+- name: Open firewall ports for Apache (firewalld)
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items: "{{ apache_open_ports }}"
+  notify: Reload firewalld
+  when: ansible_os_family == 'RedHat'
+  tags:
+    - firewall
+
+- name: Open firewall ports for Apache (ufw)
+  ufw:
+    rule: allow
+    port: "{{ item.split('/')[0] }}"
+    proto: "{{ item.split('/')[1] }}"
+  with_items: "{{ apache_open_ports }}"
+  when: ansible_os_family == 'Debian'
+  tags:
+    - firewall

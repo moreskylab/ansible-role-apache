@@ -1,3 +1,41 @@
-# SPDX-License-Identifier: MIT-0
 ---
-# defaults file for apache
+# General settings
+apache_listen_port: 80
+apache_listen_port_ssl: 443
+apache_server_name: "{{ inventory_hostname }}"
+apache_server_admin: webmaster@example.com
+apache_document_root: /var/www/html
+
+# SSL configuration
+apache_enable_ssl: false
+apache_ssl_cert_path: /etc/ssl/certs
+apache_ssl_key_path: /etc/ssl/private
+apache_ssl_cert_file: "{{ apache_server_name }}.crt"
+apache_ssl_key_file: "{{ apache_server_name }}.key"
+apache_ssl_chain_file: ""
+
+# Virtual hosts
+apache_vhosts:
+  - name: default
+    server_name: "{{ apache_server_name }}"
+    document_root: "{{ apache_document_root }}"
+    error_log: /var/log/apache_error.log
+    access_log: /var/log/apache_access.log
+    enable_ssl: "{{ apache_enable_ssl }}"
+
+# Performance settings
+apache_mpm: prefork
+apache_max_connections: 150
+apache_max_keepalive: 100
+apache_keepalive_timeout: 5
+
+# Security settings
+apache_server_tokens: Prod
+apache_server_signature: "Off"
+apache_trace_enable: "Off"
+
+# Firewall settings
+apache_configure_firewall: true
+apache_open_ports:
+  - "{{ apache_listen_port }}/tcp"
+  - "{{ apache_listen_port_ssl if apache_enable_ssl else omit }}/tcp"

@@ -1,8 +1,17 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: false
+  become: true
+
+  vars:
+    # Test-specific variables
+    apache_listen_port: 8080
+    apache_vhosts:
+      - name: test
+        server_name: test.example.com
+        document_root: /var/www/test
+
   tasks:
-    - name: Replace this task with one that validates your content
-      ansible.builtin.debug:
-        msg: "This is the effective test"
+    - name: Include the apache role
+      include_role:
+        name: apache

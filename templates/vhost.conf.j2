@@ -1,0 +1,53 @@
+# {{ ansible_managed }}
+# Virtual Host configuration for {{ item.server_name }}
+
+<VirtualHost *:{{ apache_listen_port }}>
+    ServerName {{ item.server_name }}
+    {% if item.server_alias is defined %}
+    ServerAlias {{ item.server_alias }}
+    {% endif %}
+
+    DocumentRoot {{ item.document_root }}
+
+    <Directory "{{ item.document_root }}">
+        AllowOverride All
+        Require all granted
+        Options -Indexes +FollowSymLinks
+    </Directory>
+
+    ErrorLog {{ item.error_log | default('/var/log/' + apache_service_name + '/error.log') }}
+    CustomLog {{ item.access_log | default('/var/log/' + apache_service_name + '/access.log') }} combined
+</VirtualHost>
+
+{% if item.enable_ssl | default(false) %}
+<VirtualHost *:{{ apache_listen_port_ssl }}>
+    ServerName {{ item.server_name }}
+    {% if item.server_alias is defined %}
+    ServerAlias {{ item.server_alias }}
+    {% endif %}
+
+    DocumentRoot {{ item.document_root }}
+
+    <Directory "{{ item.document_root }}">
+        AllowOverride All
+        Require all granted
+        Options -Indexes +FollowSymLinks
+    </Directory>
+
+    ErrorLog {{ item.error_log | default('/var/log/' + apache_service_name + '/error.log') }}
+    CustomLog {{ item.access_log | default('/var/log/' + apache_service_name + '/access.log') }} combined
+
+    SSLEngine on
+    SSLCertificateFile {{ apache_ssl_cert_path }}/{{ apache_ssl_cert_file }}
+    SSLCertificateKeyFile {{ apache_ssl_key_path }}/{{ apache_ssl_key_file }}
+    {% if apache_ssl_chain_file != "" %}
+    SSLCertificateChainFile {{ apache_ssl_cert_path }}/{{ apache_ssl_chain_file }}
+    {% endif %}
+
+    # Modern SSL configuration
+    SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
+    SSLHonorCipherOrder on
+    SSLCompression off
+    SSLSessionTickets off
+</VirtualHost>
+{% endif %}

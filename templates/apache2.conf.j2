@@ -1,0 +1,50 @@
+# {{ ansible_managed }}
+# Apache main configuration file
+
+# Global configuration
+ServerRoot {{ apache_config_path | dirname }}
+ServerName {{ apache_server_name }}
+ServerAdmin {{ apache_server_admin }}
+
+# Listen on specified ports
+Listen {{ apache_listen_port }}
+{% if apache_enable_ssl %}
+Listen {{ apache_listen_port_ssl }}
+{% endif %}
+
+# User and group
+User {{ apache_user }}
+Group {{ apache_group }}
+
+# MPM configuration - {{ apache_mpm }} mode
+<IfModule mpm_{{ apache_mpm }}_module>
+    StartServers          5
+    MinSpareServers       5
+    MaxSpareServers      10
+    MaxClients          {{ apache_max_connections }}
+    MaxRequestsPerChild   0
+</IfModule>
+
+# Security settings
+ServerTokens {{ apache_server_tokens }}
+ServerSignature {{ apache_server_signature }}
+TraceEnable {{ apache_trace_enable }}
+
+# Timeout settings
+Timeout 60
+KeepAlive On
+MaxKeepAliveRequests {{ apache_max_keepalive }}
+KeepAliveTimeout {{ apache_keepalive_timeout }}
+
+# General configuration
+AccessFileName .htaccess
+HostnameLookups Off
+ErrorLog /var/log/{{ apache_service_name }}/error.log
+LogLevel warn
+
+# Include module configuration
+IncludeOptional {{ apache_config_path | dirname }}/conf-enabled/*.conf
+IncludeOptional {{ apache_config_path | dirname }}/mods-enabled/*.conf
+
+# Include virtual hosts
+IncludeOptional {{ apache_vhosts_path }}/*.conf

@@ -1,0 +1,11 @@
+---
+apache_service_name: httpd
+apache_user: apache
+apache_group: apache
+apache_config_path: /etc/httpd/conf/httpd.conf
+apache_vhosts_path: /etc/httpd/conf.d
+apache_modules_path: /etc/httpd/modules
+apache_packages:
+  - httpd
+  - mod_ssl
+  - openssl

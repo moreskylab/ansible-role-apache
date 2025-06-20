@@ -1,3 +1,69 @@
-# SPDX-License-Identifier: MIT-0
 ---
-# tasks file for apache
+# Setup variables
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - always
+
+# Install packages
+- name: Install required packages
+  package:
+    name: "{{ apache_packages }}"
+    state: present
+  tags:
+    - install
+
+# Configure Apache service
+- name: Configure Apache main configuration
+  template:
+    src: apache2.conf.j2
+    dest: "{{ apache_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart apache
+  tags:
+    - configure
+
+# Create virtual host configurations
+- name: Configure virtual hosts
+  template:
+    src: vhost.conf.j2
+    dest: "{{ apache_vhosts_path }}/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items: "{{ apache_vhosts }}"
+  notify: Restart apache
+  tags:
+    - configure
+    - vhosts
+
+# Ensure directories exist
+- name: Ensure document root directories exist
+  file:
+    path: "{{ item.document_root }}"
+    state: directory
+    owner: "{{ apache_user }}"
+    group: "{{ apache_group }}"
+    mode: '0755'
+  with_items: "{{ apache_vhosts }}"
+  tags:
+    - configure
+    - vhosts
+
+# Configure firewall if enabled
+- name: Configure firewall
+  include_tasks: firewall.yml
+  when: apache_configure_firewall | bool
+  tags:
+    - firewall
+
+# Ensure service is running
+- name: Ensure Apache service is enabled and started
+  service:
+    name: "{{ apache_service_name }}"
+    state: started
+    enabled: yes
+  tags:
+    - service

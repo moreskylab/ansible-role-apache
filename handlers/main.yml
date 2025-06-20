@@ -1,3 +1,16 @@
-# SPDX-License-Identifier: MIT-0
 ---
-# handlers file for apache
+- name: Restart apache
+  service:
+    name: "{{ apache_service_name }}"
+    state: restarted
+
+- name: Reload apache
+  service:
+    name: "{{ apache_service_name }}"
+    state: reloaded
+
+- name: Reload firewalld
+  service:
+    name: firewalld
+    state: reloaded
+  when: ansible_os_family == 'RedHat'

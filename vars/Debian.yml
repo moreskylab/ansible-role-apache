@@ -1,0 +1,10 @@
+---
+apache_service_name: apache2
+apache_user: www-data
+apache_group: www-data
+apache_config_path: /etc/apache2/apache2.conf
+apache_vhosts_path: /etc/apache2/sites-available
+apache_modules_path: /usr/lib/apache2/modules
+apache_packages:
+  - apache2
+  - ssl-cert
