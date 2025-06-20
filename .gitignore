@@ -1,0 +1,12 @@
+*.retry
+*.log
+.molecule/
+.cache/
+__pycache__/
+.pytest_cache/
+.tox/
+.coverage
+.idea/
+.vscode/
+*.pyc
+molecule/*/molecule-ephemeral-directory/
