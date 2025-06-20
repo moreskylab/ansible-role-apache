@@ -7,5 +7,7 @@ rules:
     level: warning
 
 ignore: |
-  .github/workflows/stale.yml
-  .github/workflows/ci.yml
+  .github/*
+#  .github/workflows/stale.yml
+#  .github/workflows/ci.yml
+#  .github/workflows/release.yaml
