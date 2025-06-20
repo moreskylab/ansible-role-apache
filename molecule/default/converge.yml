@@ -14,7 +14,7 @@
   tasks:
     - name: Update package cache
       ansible.builtin.package:
-        update_cache: yes
+        update_cache: true
     - name: Include the apache role
       ansible.builtin.include_role:
         name: moreskylab.apache
