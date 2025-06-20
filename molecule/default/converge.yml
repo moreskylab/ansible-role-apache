@@ -10,11 +10,12 @@
       - name: test
         server_name: test.example.com
         document_root: /var/www/test
-
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
   tasks:
-    - name: Update package cache
-      ansible.builtin.package:
-        update_cache: true
     - name: Include the apache role
       ansible.builtin.include_role:
         name: moreskylab.apache
