@@ -14,4 +14,4 @@
   tasks:
     - name: Include the apache role
       ansible.builtin.include_role:
-        name: apache
+        name: moreskylab.apache
