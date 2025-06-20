@@ -1,6 +1,6 @@
 ---
 - name: Open firewall ports for Apache (firewalld)
-  firewalld:
+  ansible.posix.firewalld:
     port: "{{ item }}"
     permanent: true
     state: enabled
@@ -11,7 +11,7 @@
     - firewall
 
 - name: Open firewall ports for Apache (ufw)
-  ufw:
+  community.general.ufw:
     rule: allow
     port: "{{ item.split('/')[0] }}"
     proto: "{{ item.split('/')[1] }}"

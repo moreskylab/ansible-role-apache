@@ -1,16 +1,16 @@
 ---
 - name: Restart apache
-  service:
+  ansible.builtin.service:
     name: "{{ apache_service_name }}"
     state: restarted
 
 - name: Reload apache
-  service:
+  ansible.builtin.service:
     name: "{{ apache_service_name }}"
     state: reloaded
 
 - name: Reload firewalld
-  service:
+  ansible.builtin.service:
     name: firewalld
     state: reloaded
   when: ansible_os_family == 'RedHat'

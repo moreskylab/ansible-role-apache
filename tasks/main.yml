@@ -1,13 +1,13 @@
 ---
 # Setup variables
 - name: Include OS-specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
   tags:
     - always
 
 # Install packages
 - name: Install required packages
-  package:
+  ansible.builtin.package:
     name: "{{ apache_packages }}"
     state: present
   tags:
@@ -15,7 +15,7 @@
 
 # Configure Apache service
 - name: Configure Apache main configuration
-  template:
+  ansible.builtin.template:
     src: apache2.conf.j2
     dest: "{{ apache_config_path }}"
     owner: root
@@ -27,7 +27,7 @@
 
 # Create virtual host configurations
 - name: Configure virtual hosts
-  template:
+  ansible.builtin.template:
     src: vhost.conf.j2
     dest: "{{ apache_vhosts_path }}/{{ item.name }}.conf"
     owner: root
@@ -41,7 +41,7 @@
 
 # Ensure directories exist
 - name: Ensure document root directories exist
-  file:
+  ansible.builtin.file:
     path: "{{ item.document_root }}"
     state: directory
     owner: "{{ apache_user }}"
@@ -54,16 +54,16 @@
 
 # Configure firewall if enabled
 - name: Configure firewall
-  include_tasks: firewall.yml
+  ansible.builtin.include_tasks: firewall.yml
   when: apache_configure_firewall | bool
   tags:
     - firewall
 
 # Ensure service is running
 - name: Ensure Apache service is enabled and started
-  service:
+  ansible.builtin.service:
     name: "{{ apache_service_name }}"
     state: started
-    enabled: yes
+    enabled: true
   tags:
     - service
