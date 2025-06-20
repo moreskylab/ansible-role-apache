@@ -1,7 +1,7 @@
 # Ansible Role: Apache
 
-[![Ansible Galaxy](https://img.shields.io/badge/galaxy-yourusername.apache-blue.svg)](https://galaxy.ansible.com/yourusername/apache)
-[![Build Status](https://github.com/yourusername/ansible-role-apache/workflows/CI/badge.svg)](https://github.com/yourusername/ansible-role-apache/actions)
+[![Ansible Galaxy](https://img.shields.io/badge/galaxy-moreskylab.apache-blue.svg)](https://galaxy.ansible.com/moreskylab/apache)
+[![Build Status](https://github.com/moreskylab/ansible-role-apache/workflows/CI/badge.svg)](https://github.com/moreskylab/ansible-role-apache/actions)
 
 A production-ready Ansible role to install and configure Apache HTTP Server with various security and performance optimizations.
 
