@@ -5,7 +5,7 @@ galaxy_info:
   description: Apache 2.x for Linux.
   company: "Altgr"
   license: "license (BSD, MIT)"
-  min_ansible_version: 2.10
+  min_ansible_version: "2.10"
   platforms:
     - name: Fedora
       versions:
@@ -23,7 +23,7 @@ galaxy_info:
         - bionic
     - name: Solaris
       versions:
-        - 11.3
+        - '11.3'
   galaxy_tags:
     - web
     - apache
