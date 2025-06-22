@@ -52,12 +52,12 @@
     - configure
     - vhosts
 
-# Configure firewall if enabled
-- name: Configure firewall
-  ansible.builtin.include_tasks: firewall.yml
-  when: apache_configure_firewall | bool
-  tags:
-    - firewall
+      # Configure firewall if enabled
+      # - name: Configure firewall
+      #  ansible.builtin.include_tasks: firewall.yml
+      #  when: apache_configure_firewall | bool
+      #  tags:
+      #    - firewall
 
 # Ensure service is running
 - name: Ensure Apache service is enabled and started
